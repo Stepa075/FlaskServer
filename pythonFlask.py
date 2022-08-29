@@ -11,13 +11,26 @@ def show_user_name(username):
     return f'Hello my good friend {username} I love you!'
 
 
+# @app.route("/data", methods=['GET', ])
+# def setinfo():
+#     # Получить значение параметра id во входящем URL http://localhost:5000/data?id=666&data=123456
+#     sendid = request.args.get('id')
+#     getdata = request.args.get('data')
+#     with open("data.txt", "w") as f:
+#         f.write(getdata)
+#     return "Get info id is " + str(sendid)
+
 @app.route("/data", methods=['GET', ])
 def setinfo():
-    # Получить значение параметра id во входящем URL http://localhost:5000/data?id=666&data=123456
+    # Получить значение параметра id во входящем URL http://localhost:5000/data?id=666&data=["ander", "bolder", "xyeldeer", "zalupolder"]
     sendid = request.args.get('id')
     getdata = request.args.get('data')
+    getdata_list = getdata.split(",", -1)
+    print(getdata_list)
     with open("data.txt", "w") as f:
-        f.write(getdata)
+        for item in getdata_list:
+            print(item, file=f)
+
     return "Get info id is " + str(sendid)
 
 
