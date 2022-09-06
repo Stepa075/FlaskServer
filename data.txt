@@ -1,4 +1,2 @@
-ander
-bolder
-xyeldeer
-zalupolder
+None, 
+123456,098766

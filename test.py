@@ -1,10 +1,6 @@
-from flask import request
-from flask import Flask
-
-app = Flask(__name__)
-
-
-
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5002, debug=True)
+list = ["a", "b", "c"]
+for x in list:
+    if x == "a":
+        print("Yes")
+    else:
+        print("fuck!")
