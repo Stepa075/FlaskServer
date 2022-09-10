@@ -20,26 +20,23 @@ def show_user_name(username):
 #         f.write(getdata)
 #     return "Get info id is " + str(sendid)
 
-@app.route("/data", methods=['GET', ])
+@app.route("/data_receive", methods=['GET', ])
 def setinfo():
-    getdata = []
-    # Получить значение параметра id во входящем URL http://localhost:5000/data?id=666&data=["ander", "bolder", "xyeldeer", "zalupolder"]
+    # Получить значение параметра id во входящем URL http://localhost:5000/data?id=0001&data_time=05.09.2022,
+    # 06:23&event=1-1,2-1,3-1,4-0.5-1,6-1,7-0
     sendid = request.args.get('id')
     getdata = request.args.get('data')
-    getdata_list = getdata.split(",", -1)
-    with open("data.txt", "w") as f:
-        for item in getdata_list:
-            print(item, file=f)
-    return "Get info id is " + str(sendid)
+    with open(str(sendid) + ".txt", "w") as f:
+        f.write(getdata)
+    return "Ok"
 
 
-@app.route("/data1", methods=['GET', ])
+@app.route("/data_get", methods=['GET', ])
 def getinfo():
-    z = ""
-    #  URL http://localhost:5000/data1?id=666&data=123456
-    with open("data.txt", 'r') as f:
-        z = f.read().split()
-    return z
+    getid = request.args.get('id')
+    with open(str(getid) + ".txt", 'r') as f:
+        a = f.read()  # .split('\n')
+    return str(a)
 
 
 if __name__ == "__main__":
