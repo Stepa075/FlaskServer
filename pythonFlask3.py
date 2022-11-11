@@ -23,22 +23,18 @@ print(Variables.dictionary_of_object)
 def setinfo():
     # Получить значение параметра id во входящем URL http://localhost:5000/data?id=0001&data_time=05.09.2022,
     # 06:23&event=1-1,2-1,3-1,4-0.5-1,6-1,7-0
+    getdatetime = request.args.get('datetime')
     sendid = request.args.get('id')
     getdata = request.args.get('data')
 
-    if str(sendid) in Variables.list_of_object:  # Проверяем, что объект есть в листе, если нет
-        pass
-    else:
-        Variables.list_of_object.append(str(sendid))  # - обновляем лист
-        Variables.dictionary_of_object[str(sendid)] = str(getdata)  # - обновляем словарь по ID и пишем в него значение
-        with open("data/list_of_objects/list_of_objects.txt", "a",
-                  encoding="UTF-8") as f:  # и пишем объект в файл списка объектов
-            f.write(str(sendid) + "\n")
-    try:
-        Variables.dictionary_of_object[str(sendid)] = str(getdata)
-        with open("data/" + str(sendid) + ".txt", "w", encoding="UTF-8") as f:  # Пишем событие в файл и в словарь
+    Variables.dictionary_of_object[str(getdatetime)] = str(
+        sendid + ' ' + getdata)  # - обновляем словарь по ID и пишем в него значение
 
-            f.write(getdata)
+    try:
+        Variables.dictionary_of_object[str(getdatetime)] = str(sendid + ' ' + getdata)
+        with open("data/dictionary_of_objects/dictionary_of_objects.txt", "a",
+                  encoding="UTF-8") as f:  # Пишем событие в файл и в словарь
+            f.write(str(getdatetime) + ': ' + str(sendid) + ' ' + str(getdata) + '\n')
 
         return "Ok"
     except:
@@ -50,12 +46,22 @@ def getinfo():
     getid = request.args.get('id')  # Получаем значение ID из запроса
     # with open("data/" + str(getid) + ".txt", 'r') as f:     # получаем значение из файла, что уже по сути не нужно
     #     a = f.read()  # .split('\n')
-    # получаем значение из словаря (ключ не
-    if str(getid) == "all_data":  # удаляется, при его отсутствии будет None
-        return Variables.dictionary_of_object
-    else:
-        dict_value = Variables.dictionary_of_object.get(str(getid))
-        return str(dict_value)  # и отдаем
+    # получаем значение из словаря (ключ не удаляется, при его отсутствии будет None
+    return Variables.dictionary_of_object
+
+
+@app.route("/data_get_file", methods=['GET', ])
+def getinfo_from_file():
+    getid = request.args.get('id')  # Получаем значение ID из запроса
+    with open("data/dictionary_of_objects/dictionary_of_objects.txt", 'r') as f:     # получаем значение из файла, что уже по сути не нужно
+        a = f.read()
+    # lines = [line.rstrip('\n') for line in open('data/dictionary_of_objects/dictionary_of_objects.txt')]
+
+    # with open('data/dictionary_of_objects/dictionary_of_objects.txt', 'r') as fp:
+    #     for n, line in enumerate(fp, 1):
+    #         line = line.rstrip('\n')
+    #         lines1.append(line)
+    return a
 
 
 @app.route("/data_set", methods=['GET', ])
